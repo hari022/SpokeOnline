@@ -1,0 +1,69 @@
+<md-progress-bar mode="indeterminate" *ngIf="modalLoad==false"></md-progress-bar>
+<div fxLayout="column" id="openedPost" >
+<div>
+    <md-toolbar class="my-post-navbar">
+        <div class="title" fxLayout="row">
+            <h2 fxLayout="row" class="text-normal color-white" [innerHTML]="post?.title?.rendered | keepHtml"></h2>
+        </div>
+        <span class="fill-remaining-space"></span>
+    
+        <div fxLayout="row" style="padding-bottom:8px">
+            <!-- THESE 2 BUTTONS ARE HERE FOR FURTHER IMPLEMENTATION OF INCREASE/DECREASE FONT SIZE INSIDE POST -->
+            <div> 
+                <button md-icon-button class="color-white" (click)="decreaseFontSize()">
+                    <div class="material-icons md-18 cursor-pointer">font_download</div>
+                </button>
+            </div>
+            <div class="margin-right-10"> 
+                <button md-icon-button class="color-white" (click)="increaseFontSize()">
+                    <div class="material-icons md-24 cursor-pointer">font_download</div>
+                </button>
+            </div>
+            <div class="margin-right-10">
+                <button md-icon-button [mdMenuTriggerFor]="menu" class="color-white">
+                    <div class="material-icons cursor-pointer">share</div>
+                </button>
+            </div>
+            <md-menu #menu="mdMenu" [overlapTrigger]="false">
+                <share-buttons
+                    [pinterest]="false"
+                    [linkedIn]="false"
+                    [google]="false"
+                    [tumblr]="false"
+                    [facebook]="false"
+                    [reddit]="false"
+                    [stumbleUpOn]="false"
+                    [whatsApp]="false"  
+                    [url]="linkToShare"
+                    [title]="title">
+                </share-buttons>
+            </md-menu>  
+            <div class="margin-right-10"> 
+                <button md-icon-button md-dialog-close class="color-white"><i class="material-icons md-32">close</i></button>
+            </div>
+        </div>
+    </md-toolbar>
+    <div *ngIf="modalLoad === true" fxLayout="row" fxLayout.lt-md="column" class="post-body">
+        <div fxFlex="75">
+            <div class="margin-top-30" style="margin-right: 24px;">
+                <div class="margin-top-10" style="overflow:auto; margin-bottom:20px"> 
+                    <div id="post-content" [ngStyle]="{'font-size': fontSize + 'px'}" [innerHTML]="post?.content?.rendered | keepHtml"></div>
+                </div>            
+            </div>
+        </div>
+        <div fxFlex="25" class="border-left-light-gray padding-right-25 bg-color-grey-lighter" style="height:100%">
+            <div class="margin-top-30" style="margin-left: 24px;">
+                <div class="margin-top-10" style="overflow:auto; margin-bottom:20px"> 
+                    <div style="font-weight:600; margin-bottom: 20px"> Related Posts </div>
+                    <div fxLayout="column" *ngFor="let related of relatedPosts" style="margin-bottom: 15px;">
+                        <md-card (click)="openPost(related.id, related.title.rendered)">
+                            <img style="margin-bottom:0" md-card-image src="{{related.featured_media_url}}">
+                            <h3 class="text-small padding-clear" [innerHTML]="related.title.rendered | keepHtml"></h3>
+                        </md-card>
+                    </div>
+                </div>            
+            </div>
+        </div>
+    </div>
+</div>
+</div>
